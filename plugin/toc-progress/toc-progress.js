@@ -111,7 +111,7 @@ toc_progress.create=function()
 		// Main title
 		var main_title_set = false;
 		{
-			var title_element=this.getElementsByTagNames('h1,h2,h3,h4,h5',main_section)[0];
+			var title_element=this.getElementsByTagNames('h1,h2,h3,h4,h5,h6',main_section)[0];
 			if (title_element!=null && (!title_element.hasAttribute('class') || title_element.getAttribute('class').indexOf('no-toc-progress')==-1))
 			{
 				if (main_section.hasAttribute('data-state'))
@@ -161,7 +161,7 @@ toc_progress.create=function()
 			for (var secondary_sections_index=0;secondary_sections_index<secondary_sections.length;secondary_sections_index++)
 			{
 				var secondary_section=secondary_sections[secondary_sections_index];
-				var title_element=this.getElementsByTagNames('h1,h2,h3',secondary_section)[0];
+				var title_element=this.getElementsByTagNames('h1,h2,h3,h4,h5,h6',secondary_section)[0];
 				if (secondary_section.hasAttribute('class') && secondary_section.getAttribute('class').indexOf('no-toc-progress')!=-1)
 				{
 					title_element = null;
