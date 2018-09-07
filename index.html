@@ -1,49 +1,198 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+	<title>reveal.js</title>
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/sky.css">
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+
+				Table of Content
+				<table>
+					<thead>
+						<tr>
+							<th colspan="12"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td colspan="12">
+								<small>
+									<a href="#europe">1 Europe</a>
+								</small>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="12">
+								SVG Graphics
+							</td>
+						</tr>
+
+						<tr>
+							<td>
+								<small>
+									<a href="#svg_circle">2.1 Circle</a>
+								</small>
+							</td>
+							<td>
+								<small>
+									<a href="#svg_curves">2.2 Curves</a>
+								</small>
+							</td>
+							<td>
+								<small>
+									<a href="#svg_group">2.3 Group</a>
+								</small>
+							</td>
+							<td>
+								<small>
+									<a href="#svg_line">2.4 Line</a>
+								</small>
+							</td>
+							<td>
+								<small>
+									<a href="#svg_path">2.5 Path</a>
+								</small>
+							</td>
+							<td>
+								<small>
+									<a href="#svg_polygon">2.6 Polygon</a>
+								</small>
+							</td>
+							<td>
+								<small>
+									<a href="#svg_rectangle">2.7 Rectangle</a>
+								</small>
+							</td>
+
+							<td>
+								<small>
+									<a href="#svg_scale_translate">2.8 Scale Translate</a>
+								</small>
+							</td>
+							<td>
+								<small>
+									<a href="#svg_scale">2.9 Scale</a>
+								</small>
+
+							</td>
+							<td>
+								<small>
+									<a href="#svg_text">2.10 Text</a>
+								</small>
+							</td>
+							<td>
+								<small>
+									<a href="#svg_text_rotate">2.11 Text Rotate</a>
+								</small>
+							</td>
+							<td>
+								<small>
+									<a href="#svg_translate">2.12 Translate</a>
+								</small>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+
+			</section>
+			<section id="europe">
+				<h5>1 Europe</h5>
+				<iframe data-src='d3jsMaps/chapter-1/example-1.html' height='700' width='950' scrolling='no'></iframe>
+			</section>
+			<section>
+
+				<section id="svg_circle">
+					<h5>2.1 SVG Grapics Circle</h5>
+					<iframe data-src='d3jsMaps/chapter-2/circle.html' height='700' width='950' scrolling='no'></iframe>
+				</section>
+				<section id="svg_curves">
+					<h5>2.2 SVG Grapics Curves</h5>
+					<iframe data-src='d3jsMaps/chapter-2/curves.html' height='700' width='950' scrolling='no'></iframe>
+				</section>
+				<section id="svg_group">
+					<h5>2.3 SVG Grapics Group</h5>
+					<iframe data-src='d3jsMaps/chapter-2/group.html' height='700' width='950' scrolling='no'></iframe>
+				</section>
+				<section id="svg_line">
+					<h5>2.4 SVG Grapics Line</h5>
+					<iframe data-src='d3jsMaps/chapter-2/line.html' height='700' width='950' scrolling='no'></iframe>
+				</section>
+				<section id="svg_path">
+					<h5>2.5 SVG Grapics Path</h5>
+					<iframe data-src='d3jsMaps/chapter-2/path.html' height='700' width='950' scrolling='no'></iframe>
+				</section>
+				<section id="svg_polygon">
+					<h5>2.6 SVG Grapics Polygon</h5>
+					<iframe data-src='d3jsMaps/chapter-2/polygon.html' height='700' width='950' scrolling='no'></iframe>
+				</section>
+				<section id="svg_rectangle">
+					<h5>2.7 SVG Grapics Rectangle</h5>
+					<iframe data-src='d3jsMaps/chapter-2/rectangle.html' height='700' width='950' scrolling='no'></iframe>
+				</section>
+				<section id="svg_scale_translate">
+					<h5>2.8 SVG Grapics Scale Translate</h5>
+					<iframe data-src='d3jsMaps/chapter-2/scale_translate.html' height='700' width='950' scrolling='no'></iframe>
+				</section>
+				<section id="svg_scale">
+					<h5>2.9 SVG Grapics Scale </h5>
+					<iframe data-src='d3jsMaps/chapter-2/scale.html' height='700' width='950' scrolling='no'></iframe>
+				</section>
+				<section id="svg_text">
+					<h5>2.10 SVG Grapics Text</h5>
+					<iframe data-src='d3jsMaps/chapter-2/text.html' height='700' width='950' scrolling='no'></iframe>
+				</section>
+				<section id="svg_text_rotate">
+					<h5>2.11 SVG Grapics Text Rotate</h5>
+					<iframe data-src='d3jsMaps/chapter-2/text-rotate.html' height='700' width='950' scrolling='no'></iframe>
+				</section>
+				<section id="svg_translate">
+					<h5>2.12 SVG Grapics Translate</h5>
+					<iframe data-src='d3jsMaps/chapter-2/translate.html' height='700' width='950' scrolling='no'></iframe>
+				</section>
+
+			</section>
 		</div>
+	</div>
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.js"></script>
 
-		<script>
-			// More info about config & dependencies:
-			// - https://github.com/hakimel/reveal.js#configuration
-			// - https://github.com/hakimel/reveal.js#dependencies
-			Reveal.initialize({
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
-				]
-			});
-		</script>
-	</body>
+	<script>
+		// More info about config & dependencies:
+		// - https://github.com/hakimel/reveal.js#configuration
+		// - https://github.com/hakimel/reveal.js#dependencies
+		Reveal.initialize({
+			dependencies: [
+				{ src: 'plugin/markdown/marked.js' },
+				{ src: 'plugin/markdown/markdown.js' },
+				{ src: 'plugin/notes/notes.js', async: true },
+				{ src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } }
+			]
+		});
+	</script>
+</body>
+
 </html>
