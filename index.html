@@ -26,36 +26,36 @@
 <body>
 	<div class="reveal">
 		<div class="slides">
-			
+
 			<section id="europe">
 				<h5>1 Europe</h5>
+				<small>Code from the book: <a href="https://www.packtpub.com/web-development/learning-d3js-5-mapping-second-edition"> Learning D3JS Mapping - second edition</a></small>
 				<iframe data-src='d3jsMaps/chapter-1/example-1.html' height='700' width='950' scrolling='no'></iframe>
 			</section>
 			<section>
-
 				<section id="svg_circle">
 					<h5>2.1 SVG Grapics Circle</h5>
 					<iframe data-src='d3jsMaps/chapter-2/circle.html' height='700' width='950' scrolling='no'></iframe>
 				</section>
 				<section id="svg_curves">
 					<h5>2.2 SVG Grapics Curves</h5>
-					<iframe data-src='d3jsMaps/chapter-2/curves.html'  height='700' width='950' scrolling='no'></iframe>
+					<iframe data-src='d3jsMaps/chapter-2/curves.html' height='700' width='950' scrolling='no'></iframe>
 				</section>
 				<section id="svg_group">
 					<h5>2.3 SVG Grapics Group</h5>
-					<iframe data-src='d3jsMaps/chapter-2/group.html'  height='700' width='950' scrolling='no'></iframe>
+					<iframe data-src='d3jsMaps/chapter-2/group.html' height='700' width='950' scrolling='no'></iframe>
 				</section>
 				<section id="svg_line">
 					<h5>2.4 SVG Grapics Line</h5>
-					<iframe data-src='d3jsMaps/chapter-2/line.html'  height='700' width='950' scrolling='no'></iframe>
+					<iframe data-src='d3jsMaps/chapter-2/line.html' height='700' width='950' scrolling='no'></iframe>
 				</section>
 				<section id="svg_path">
 					<h5>2.5 SVG Grapics Path</h5>
-					<iframe data-src='d3jsMaps/chapter-2/path.html' height='700' width='950'scrolling='no'></iframe>
+					<iframe data-src='d3jsMaps/chapter-2/path.html' height='700' width='950' scrolling='no'></iframe>
 				</section>
 				<section id="svg_polygon">
 					<h5>2.6 SVG Grapics Polygon</h5>
-					<iframe data-src='d3jsMaps/chapter-2/polygon.html'  height='700' width='950' scrolling='no'></iframe>
+					<iframe data-src='d3jsMaps/chapter-2/polygon.html' height='700' width='950' scrolling='no'></iframe>
 				</section>
 				<section id="svg_rectangle">
 					<h5>2.7 SVG Grapics Rectangle</h5>
@@ -81,7 +81,173 @@
 					<h5>2.12 SVG Grapics Translate</h5>
 					<iframe data-src='d3jsMaps/chapter-2/translate.html' height='700' width='950' scrolling='no'></iframe>
 				</section>
-
+			</section>
+			<section>
+				<section>
+					<h5>3.1 D3 Basics Rectangle</h5>
+					<iframe data-src='d3jsMaps/chapter-3/example-1.html' height='300' width='400' scrolling='no'></iframe>
+					<pre class="javascript">
+						<code>
+				svg.append('rect') 
+					.attr('x', 10) 
+					.attr('y', 10) 
+					.attr("width",50) 
+					.attr("height",100); 
+						</code>
+					</pre>
+				</section>
+				<section>
+					<h5>3.2 D3 Basics enter()</h5>
+					<iframe data-src='d3jsMaps/chapter-3/example-2.html' height='220' width='400' scrolling='no'></iframe>
+					<pre class="javascript">
+						<code>
+				var svg = d3.select("body") 
+					.append("svg") 
+					.attr("width", 200) 
+					.attr("height", 200); 
+				svg.selectAll('rect').data([1,2]).enter()
+					.append('rect') 
+					.attr('x', function(d){ return d*20; }) 
+					.attr('y', function(d){ return d*50; });
+						</code>
+					</pre>
+				</section>
+				<section>
+					<h5>3.3 D3 Basics data() and enter() and functions within</h5>
+					<iframe data-src='d3jsMaps/chapter-3/example-3.html' height='230' width='400' scrolling='no'></iframe>
+					<pre class="javascript">
+						<code>
+				var svg = d3.select("body") 
+					.append("svg") 
+					.attr("width", 200) 
+					.attr("height", 200);
+				svg.selectAll('rect').data([1,2]).enter()
+					.append('rect') 
+					.attr('x', function(d){ return d*20; }) 
+					.attr('y', function(d){ return d*50; })
+					.attr("width",50) 
+					.attr("height",100); 
+						</code>
+					</pre>
+				</section>
+				<section>
+					<h5>3.4 D3 Basics data changes and update</h5>
+					<iframe data-src='d3jsMaps/chapter-3/example-4.html' height='230' width='400' scrolling='no'></iframe>
+					<pre class="javascript">
+							<code>
+				var makeData = function(n){
+					var arr = [];
+				
+					for (var i=0; i&lt;n; i++){
+						arr.push({
+						x:Math.floor((Math.random() * 100) + 1),
+						y:Math.floor((Math.random() * 100) + 1),
+						width:Math.floor((Math.random() * 100) + 1),
+						height:Math.floor((Math.random() * 100) + 1)
+						})
+					};
+				
+					return arr;
+					}
+				
+					var rectangles = function(svg) {
+					var data = makeData(2);
+				
+					var rect = svg.selectAll('rect').data(data);
+				
+					// Enter
+					rect.enter().append('rect')
+						.attr('test', function(d,i) {
+						// Enter called 2 times only
+						console.log('enter placing initial rectangle: ', i)
+					});
+				
+					// Update
+					rect.transition().duration(500).attr('x', function(d){ return d.x; })
+						.attr('y', function(d){ return d.y; })
+						.attr('width', function(d){ return d.width; })
+						.attr('height', function(d){ return d.height; })
+						.attr('test', function(d, i) {
+							// update every data change
+							console.log('updating x position to: ', d.x)
+						});
+					};
+				
+					var svg = d3.select("body")
+						.append("svg")
+						.attr("width", 200)
+						.attr("height", 200);
+				
+					rectangles(svg);
+				
+					setInterval(function(){
+					rectangles(svg);
+					},1000); 
+							</code>
+						</pre>
+				</section>
+				<section>
+					<h5>3.5 D3 Basics exit()</h5>
+					<iframe data-src='d3jsMaps/chapter-3/example-5.html' height='200' width='400' scrolling='no'></iframe>
+					<pre class="javascript">
+				<code>
+		var makeData = function(n){
+			var arr = [];
+			
+			for (var i=0; i&lt;n; i++){
+				arr.push({
+				x:Math.floor((Math.random() * 100) + 1),
+				y:Math.floor((Math.random() * 100) + 1),
+				width:Math.floor((Math.random() * 100) + 1),
+				height:Math.floor((Math.random() * 100) + 1)
+				})
+			};
+			
+			return arr;
+			};
+			
+			var rectangles = function(svg) {
+			var data = makeData((Math.random() * 5) + 1);
+			
+			var rect = svg.selectAll('rect').data(data);
+			
+			// Enter
+			rect.enter().append('rect')
+				.attr('test', function(d,i) {
+				// Enter called 2 times only
+				console.log('enter placing initial rectangle: ', i)
+			});
+			
+			// Update
+			rect.transition().duration(500).attr('x', function(d){ return d.x; })
+				.attr('y', function(d){ return d.y; })
+				.attr('width', function(d){ return d.width; })
+				.attr('height', function(d){ return d.height; })
+				.attr('test', function(d, i) {
+					// update every data change
+					console.log('updating x position to: ', d.x)
+				});
+			
+			// Exit
+			rect.exit().attr('test', function(d) {
+				console.log('no data...')
+			}).remove();
+			};
+			
+			var svg = d3.select("body")
+				.append("svg")
+				.attr("width", 200)
+				.attr("height", 200);
+			
+			rectangles(svg);
+			
+			setInterval(function(){
+			rectangles(svg);
+			},1000);
+							
+				</code>
+						</pre>
+				</section>
 			</section>
 		</div>
 	</div>
@@ -94,14 +260,14 @@
 		// - https://github.com/hakimel/reveal.js#configuration
 		// - https://github.com/hakimel/reveal.js#dependencies
 		Reveal.initialize({
-			width:"100%",
-			height:"100%",
+			width: "100%",
+			height: "100%",
 			dependencies: [
 				{ src: 'plugin/markdown/marked.js' },
 				{ src: 'plugin/markdown/markdown.js' },
 				{ src: 'plugin/notes/notes.js', async: true },
 				{ src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
-				{ src: 'plugin/toc-progress/toc-progress.js', async: true, callback: function() { toc_progress.initialize(); toc_progress.create(); } }
+				{ src: 'plugin/toc-progress/toc-progress.js', async: true, callback: function () { toc_progress.initialize(); toc_progress.create(); } }
 
 			]
 		});
