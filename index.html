@@ -259,6 +259,7 @@ rectangles(svg);
 		// More info about config & dependencies:
 		// - https://github.com/hakimel/reveal.js#configuration
 		// - https://github.com/hakimel/reveal.js#dependencies
+		var gaPropertyID = 'UA-54139310-2';
 		Reveal.initialize({
 			width: "100%",
 			height: "100%",
@@ -267,8 +268,8 @@ rectangles(svg);
 				{ src: 'plugin/markdown/markdown.js' },
 				{ src: 'plugin/notes/notes.js', async: true },
 				{ src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
-				{ src: 'plugin/toc-progress/toc-progress.js', async: true, callback: function () { toc_progress.initialize(); toc_progress.create(); } }
-
+				{ src: 'plugin/toc-progress/toc-progress.js', async: true, callback: function () { toc_progress.initialize(); toc_progress.create(); } },
+				{ src: 'plugin/ga/reveal-ga.min.js' }
 			]
 		});
 	</script>
