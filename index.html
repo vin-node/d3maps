@@ -6,9 +6,27 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 	<title>D3 Maps</title>
-
+	<style>
+	.multiCol {
+		display: table;
+		table-layout: fixed;
+		width: 100%;
+		text-align: left;
+	}
+	.multiCol .col {
+		display: table-cell;
+		vertical-align: top;
+		width: 50%;
+		padding: 0 0 0 0;
+		border: 0 0 0 0;
+	}
+	.multiCol .col:first-of-type {
+		padding-left: 0;
+		border: 0;
+	}
+	</style>
 	<link rel="stylesheet" href="css/reveal.css">
-	<link rel="stylesheet" href="css/theme/simple.css">
+	<link rel="stylesheet" href="css/theme/beige.css">
 	<link rel="stylesheet" href="plugin/toc-progress/toc-progress.css">
 	<!-- Theme used for syntax highlighting of code -->
 	<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -247,6 +265,238 @@ rectangles(svg);
 							
 				</code>
 						</pre>
+				</section>
+			</section>
+			<section>
+				<section>
+					<h5>4.1 SVG Grapics Circle</h5>
+				
+					<div class='multiCol'>
+						<div class='col'>
+							<iframe data-src='d3jsMaps/chapter-4/example-1.html' height="600" width="600" scrolling='no'></iframe>
+						</div>
+						<div class='col'>
+							<pre class="javascript">
+								<code>
+var makeData = function(n){
+var arr = [];
+
+for (var i=0; i&lt;n; i++){
+	arr.push({
+	x:Math.floor((Math.random() * 100) + 1),
+	y:Math.floor((Math.random() * 100) + 1),
+	width:Math.floor((Math.random() * 100) + 1),
+	height:Math.floor((Math.random() * 100) + 1)
+	})
+};
+
+return arr;
+};
+
+var rectangles = function(svg) {
+var data = makeData((Math.random() * 5) + 1);
+
+var rect = svg.selectAll('rect').data(data);
+
+// Enter
+rect.enter().append('rect')
+	.attr('test', function(d,i) {
+	// Enter called 2 times only
+	console.log('enter placing initial rectangle: ', i)
+});
+
+// Update
+rect.transition().duration(500).attr('x', function(d){ return d.x; })
+	.attr('y', function(d){ return d.y; })
+	.attr('width', function(d){ return d.width; })
+	.attr('height', function(d){ return d.height; })
+	.attr('test', function(d, i) {
+		// update every data change
+		console.log('updating x position to: ', d.x)
+	});
+
+// Exit
+rect.exit().attr('test', function(d) {
+	console.log('no data...')
+}).remove();
+};
+
+var svg = d3.select("body")
+	.append("svg")
+	.attr("width", 200)
+	.attr("height", 200);
+
+rectangles(svg);
+
+setInterval(function(){
+rectangles(svg);
+},1000);
+											
+								</code></pre>						</div>
+					</div>
+					
+				</section>
+				<section id="svg_curves">
+					<h5>4.2 SVG Grapics Curves</h5>
+					<iframe data-src='d3jsMaps/chapter-4/example-2.html' height='700' width='950' scrolling='no'></iframe>
+				</section>
+				<section id="svg_group">
+					<h5>4.3 SVG Grapics Group</h5>
+					<iframe data-src='d3jsMaps/chapter-4/example-3.html' height='700' width='950' scrolling='no'></iframe>
+				</section>
+				<section id="svg_line">
+					<h5>4.4 SVG Grapics Line</h5>
+					<iframe data-src='d3jsMaps/chapter-4/example-4.html' height='700' width='950' scrolling='no'></iframe>
+				</section>
+				<section id="svg_path">
+					<h5>4.5 SVG Grapics Path</h5>
+					<iframe data-src='d3jsMaps/chapter-4/example-5.html' height='700' width='950' scrolling='no'></iframe>
+				</section>
+				<section id="svg_polygon">
+					<h5>4.6 SVG Grapics Polygon</h5>
+					<iframe data-src='d3jsMaps/chapter-4/example-6.html' height='700' width='950' scrolling='no'></iframe>
+				</section>
+				<section id="svg_rectangle">
+					<h5>4.7 SVG Grapics Rectangle</h5>
+					<iframe data-src='d3jsMaps/chapter-4/example-7.html' height='700' width='950' scrolling='no'></iframe>
+				</section>
+				<section>
+					<h5>Doing two-column (this headline still full-width)</h5>
+				
+					<div class='multiCol'>
+						<div class='col'>
+							<iframe data-src='d3jsMaps/chapter-3/example-5.html' height='700' width='950' scrolling='no'></iframe>
+						</div>
+						<div class='col'>
+							<pre class="javascript">
+								<code>
+var makeData = function(n){
+var arr = [];
+
+for (var i=0; i&lt;n; i++){
+	arr.push({
+	x:Math.floor((Math.random() * 100) + 1),
+	y:Math.floor((Math.random() * 100) + 1),
+	width:Math.floor((Math.random() * 100) + 1),
+	height:Math.floor((Math.random() * 100) + 1)
+	})
+};
+
+return arr;
+};
+
+var rectangles = function(svg) {
+var data = makeData((Math.random() * 5) + 1);
+
+var rect = svg.selectAll('rect').data(data);
+
+// Enter
+rect.enter().append('rect')
+	.attr('test', function(d,i) {
+	// Enter called 2 times only
+	console.log('enter placing initial rectangle: ', i)
+});
+
+// Update
+rect.transition().duration(500).attr('x', function(d){ return d.x; })
+	.attr('y', function(d){ return d.y; })
+	.attr('width', function(d){ return d.width; })
+	.attr('height', function(d){ return d.height; })
+	.attr('test', function(d, i) {
+		// update every data change
+		console.log('updating x position to: ', d.x)
+	});
+
+// Exit
+rect.exit().attr('test', function(d) {
+	console.log('no data...')
+}).remove();
+};
+
+var svg = d3.select("body")
+	.append("svg")
+	.attr("width", 200)
+	.attr("height", 200);
+
+rectangles(svg);
+
+setInterval(function(){
+rectangles(svg);
+},1000);
+											
+								</code></pre>						</div>
+					</div>
+					
+				</section>
+			</section>
+			<section>
+				<section>
+					<h5>Planets</h5>
+				
+					<div class='multiCol'>
+						<div class='col'>
+							<iframe data-src='d3jsMaps/chapter-12/index.html' height='700' width='950' scrolling='no'></iframe>
+						</div>
+						<div class='col'>
+							<pre class="javascript">
+								<code>
+var makeData = function(n){
+var arr = [];
+
+for (var i=0; i&lt;n; i++){
+	arr.push({
+	x:Math.floor((Math.random() * 100) + 1),
+	y:Math.floor((Math.random() * 100) + 1),
+	width:Math.floor((Math.random() * 100) + 1),
+	height:Math.floor((Math.random() * 100) + 1)
+	})
+};
+
+return arr;
+};
+
+var rectangles = function(svg) {
+var data = makeData((Math.random() * 5) + 1);
+
+var rect = svg.selectAll('rect').data(data);
+
+// Enter
+rect.enter().append('rect')
+	.attr('test', function(d,i) {
+	// Enter called 2 times only
+	console.log('enter placing initial rectangle: ', i)
+});
+
+// Update
+rect.transition().duration(500).attr('x', function(d){ return d.x; })
+	.attr('y', function(d){ return d.y; })
+	.attr('width', function(d){ return d.width; })
+	.attr('height', function(d){ return d.height; })
+	.attr('test', function(d, i) {
+		// update every data change
+		console.log('updating x position to: ', d.x)
+	});
+
+// Exit
+rect.exit().attr('test', function(d) {
+	console.log('no data...')
+}).remove();
+};
+
+var svg = d3.select("body")
+	.append("svg")
+	.attr("width", 200)
+	.attr("height", 200);
+
+rectangles(svg);
+
+setInterval(function(){
+rectangles(svg);
+},1000);
+											
+								</code></pre>						</div>
+					</div>
+					
 				</section>
 			</section>
 		</div>

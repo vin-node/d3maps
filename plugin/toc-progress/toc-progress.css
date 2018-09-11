@@ -81,7 +81,7 @@ div.progress[style="display: block;"] ~ #toc-progress-footer
 {
 	width: 50%;
 	height: 100%;
-	float: right;
+	float: left;
 	overflow: hidden;
 	letter-spacing: 0em;
 }

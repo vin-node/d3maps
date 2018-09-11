@@ -25,7 +25,7 @@
     (function() {
 
       var height = 600,
-          width = 900,
+          width = 450,
           projection = d3.geoMercator(),
           mexico = void 0;
 
@@ -35,8 +35,7 @@
 
       var svg = d3.select("#map")
           .append("svg")
-          .attr("width", width)
-          .attr("height", height);
+          .attr("viewBox","0 0 450 600");
 
       d3.json('geo-data.json').then(function(data) {
 
