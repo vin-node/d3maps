@@ -7,24 +7,28 @@
 
 	<title>D3 Maps</title>
 	<style>
-	.multiCol {
-		display: table;
-		table-layout: fixed;
-		width: 100%;
-		text-align: left;
-	}
-	.multiCol .col {
-		display: table-cell;
-		vertical-align: top;
-		width: 50%;
-		padding: 0 0 0 0;
-		border: 0 0 0 0;
-	}
-	.multiCol .col:first-of-type {
-		padding-left: 0;
-		border: 0;
-	}
+		.multiCol {
+			display: table;
+			table-layout: fixed;
+			width: 100%;
+			text-align: left;
+		}
+
+		.multiCol .col {
+			display: table-cell;
+			vertical-align: top;
+			width: 50%;
+			padding: 0 0 0 0;
+			border: 0 0 0 0;
+		}
+
+		.multiCol .col:first-of-type {
+			padding-left: 0;
+			border: 0;
+		}
 	</style>
+	<link rel="stylesheet" href="plugin/highlight/styles/railscasts.css">
+	
 	<link rel="stylesheet" href="css/reveal.css">
 	<link rel="stylesheet" href="css/theme/beige.css">
 	<link rel="stylesheet" href="plugin/toc-progress/toc-progress.css">
@@ -47,7 +51,11 @@
 
 			<section id="europe">
 				<h5>1 Europe</h5>
-				<small>Code from the book: <a href="https://www.packtpub.com/web-development/learning-d3js-5-mapping-second-edition" target="_blank"> Learning D3JS Mapping - second edition</a></small><br/>
+				<small>Code from the book:
+					<a href="https://www.packtpub.com/web-development/learning-d3js-5-mapping-second-edition" target="_blank">
+						Learning D3JS Mapping - second edition</a>
+				</small>
+				<br/>
 				<iframe data-src='d3jsMaps/chapter-1/example-1.html' height='700' width='950' scrolling='no'></iframe>
 			</section>
 			<section>
@@ -270,172 +278,438 @@ rectangles(svg);
 			<section>
 				<section>
 					<h5>4.1 SVG Grapics Circle</h5>
-				
+
 					<div class='multiCol'>
 						<div class='col'>
-							<iframe data-src='d3jsMaps/chapter-4/example-1.html' height="600" width="600" scrolling='no'></iframe>
+							<iframe data-src='d3jsMaps/chapter-4/example-1.html' height='700' width='800' scrolling='no'></iframe>
 						</div>
 						<div class='col'>
 							<pre class="javascript">
 								<code>
-var makeData = function(n){
-var arr = [];
+var margin = { top: 30, right: 50, bottom: 30, left: 0 },
+width = window.innerWidth - margin.left - margin.right,
+height = window.innerHeight * 0.66 - margin.top - margin.bottom;
 
-for (var i=0; i&lt;n; i++){
-	arr.push({
-	x:Math.floor((Math.random() * 100) + 1),
-	y:Math.floor((Math.random() * 100) + 1),
-	width:Math.floor((Math.random() * 100) + 1),
-	height:Math.floor((Math.random() * 100) + 1)
-	})
-};
+var projection = d3.geoMercator(),
+	mexico = void 0;
 
-return arr;
-};
+// Special d3 helper that converts geo coordinates to paths
+// based on a projection
+var path = d3.geoPath().projection(projection);
 
-var rectangles = function(svg) {
-var data = makeData((Math.random() * 5) + 1);
-
-var rect = svg.selectAll('rect').data(data);
-
-// Enter
-rect.enter().append('rect')
-	.attr('test', function(d,i) {
-	// Enter called 2 times only
-	console.log('enter placing initial rectangle: ', i)
-});
-
-// Update
-rect.transition().duration(500).attr('x', function(d){ return d.x; })
-	.attr('y', function(d){ return d.y; })
-	.attr('width', function(d){ return d.width; })
-	.attr('height', function(d){ return d.height; })
-	.attr('test', function(d, i) {
-		// update every data change
-		console.log('updating x position to: ', d.x)
-	});
-
-// Exit
-rect.exit().attr('test', function(d) {
-	console.log('no data...')
-}).remove();
-};
-
-var svg = d3.select("body")
+var svg = d3.select("#map")
 	.append("svg")
-	.attr("width", 200)
-	.attr("height", 200);
+	.attr('width', width + margin.left + margin.top)
+	.attr('height', height + margin.top + margin.bottom);
 
-rectangles(svg);
+d3.json('geo-data.json').then(function(data) {
 
-setInterval(function(){
-rectangles(svg);
-},1000);
+	console.log('mexico', data);
+	var states = topojson.feature(data, data.objects.MEX_adm1);
+
+	// Setup the scale and translate
+	var b, s, t;
+	projection.scale(1).translate([0, 0]);
+	var b = path.bounds(states);
+	var s = .95 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height);
+	var t = [(width - s * (b[1][0] + b[0][0])) / 2, (height - s * (b[1][1] + b[0][1])) / 2];
+	projection.scale(s).translate(t);
+
+	var map = svg.append('g').attr('class', 'boundary');
+	mexico = map.selectAll('path').data(states.features);
+
+	//Enter
+	mexico.enter()
+		.append('path')
+		.attr('d', path);
+
+	//Update
+	mexico.attr('fill', '#eee');
+
+	//Exit
+	mexico.exit().remove();
+});
 											
-								</code></pre>						</div>
-					</div>
-					
+							</code>
+						</pre>
+			 		</div>
+				</div>
+
 				</section>
 				<section id="svg_curves">
 					<h5>4.2 SVG Grapics Curves</h5>
-					<iframe data-src='d3jsMaps/chapter-4/example-2.html' height='700' width='950' scrolling='no'></iframe>
-				</section>
-				<section id="svg_group">
-					<h5>4.3 SVG Grapics Group</h5>
-					<iframe data-src='d3jsMaps/chapter-4/example-3.html' height='700' width='950' scrolling='no'></iframe>
-				</section>
-				<section id="svg_line">
-					<h5>4.4 SVG Grapics Line</h5>
-					<iframe data-src='d3jsMaps/chapter-4/example-4.html' height='700' width='950' scrolling='no'></iframe>
-				</section>
-				<section id="svg_path">
-					<h5>4.5 SVG Grapics Path</h5>
-					<iframe data-src='d3jsMaps/chapter-4/example-5.html' height='700' width='950' scrolling='no'></iframe>
-				</section>
-				<section id="svg_polygon">
-					<h5>4.6 SVG Grapics Polygon</h5>
-					<iframe data-src='d3jsMaps/chapter-4/example-6.html' height='700' width='950' scrolling='no'></iframe>
-				</section>
-				<section id="svg_rectangle">
-					<h5>4.7 SVG Grapics Rectangle</h5>
-					<iframe data-src='d3jsMaps/chapter-4/example-7.html' height='700' width='950' scrolling='no'></iframe>
-				</section>
-				<section>
-					<h5>Doing two-column (this headline still full-width)</h5>
-				
+					
+
+					
 					<div class='multiCol'>
 						<div class='col'>
-							<iframe data-src='d3jsMaps/chapter-3/example-5.html' height='700' width='950' scrolling='no'></iframe>
+							<iframe data-src='d3jsMaps/chapter-4/example-2.html' height='700' width='800' scrolling='no'></iframe>
 						</div>
 						<div class='col'>
 							<pre class="javascript">
 								<code>
-var makeData = function(n){
-var arr = [];
+var height = 600;
+var width = 900;
+var projection = d3.geoMercator();
 
-for (var i=0; i&lt;n; i++){
-	arr.push({
-	x:Math.floor((Math.random() * 100) + 1),
-	y:Math.floor((Math.random() * 100) + 1),
-	width:Math.floor((Math.random() * 100) + 1),
-	height:Math.floor((Math.random() * 100) + 1)
-	})
-};
+var path = d3.geoPath().projection(projection);
 
-return arr;
-};
-
-var rectangles = function(svg) {
-var data = makeData((Math.random() * 5) + 1);
-
-var rect = svg.selectAll('rect').data(data);
-
-// Enter
-rect.enter().append('rect')
-	.attr('test', function(d,i) {
-	// Enter called 2 times only
-	console.log('enter placing initial rectangle: ', i)
-});
-
-// Update
-rect.transition().duration(500).attr('x', function(d){ return d.x; })
-	.attr('y', function(d){ return d.y; })
-	.attr('width', function(d){ return d.width; })
-	.attr('height', function(d){ return d.height; })
-	.attr('test', function(d, i) {
-		// update every data change
-		console.log('updating x position to: ', d.x)
-	});
-
-// Exit
-rect.exit().attr('test', function(d) {
-	console.log('no data...')
-}).remove();
-};
-
-var svg = d3.select("body")
+var svg = d3.select("#map")
 	.append("svg")
-	.attr("width", 200)
-	.attr("height", 200);
+	.attr("width", width)
+	.attr("height", height);
 
-rectangles(svg);
+d3.json('geo-data.json').then(function(data) {
+	var states = topojson.feature(data, data.objects.MEX_adm1);
+	console.log('states', states);
 
-setInterval(function(){
-rectangles(svg);
-},1000);
-											
-								</code></pre>						</div>
+	var b, s, t;
+	projection.scale(1).translate([0, 0]);
+	var b = path.bounds(states.features[5]); // zoom to the 6th state
+	var s = .9 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height);
+	var t = [(width - s * (b[1][0] + b[0][0])) / 2, (height - s * (b[1][1] + b[0][1])) / 2];
+	projection.scale(s).translate(t);
+
+	var map = svg.append('g').attr('class', 'boundary');
+	var mexico = map.selectAll('path').data(states.features);
+
+	mexico.enter()
+		.append('path')
+		.attr('d', path);
+
+	mexico.attr('fill', '#eee');
+
+	mexico.exit().remove();
+});	
+							</code>
+						</pre>
+			 		</div>
+				</div>
+				</section>
+				<section id="svg_group">
+					<h5>4.3 SVG Grapics Group</h5>
+					<div class='multiCol'>
+						<div class='col'>
+							<iframe data-src='d3jsMaps/chapter-4/example-3.html' height='700' width='855' scrolling='no'></iframe>
+						</div>
+						<div class='col'>
+							<pre class="javascript">
+								<code>
+var height = 600;
+var width = 900;
+var projection = d3.geoMercator();
+var mexico = void 0;
+
+var path = d3.geoPath().projection(projection);
+
+var svg = d3.select("#map")
+	.append("svg")
+	.attr("width", width)
+	.attr("height", height);
+
+d3.json('geo-data.json').then(function(data) {
+	var states = topojson.feature(data, data.objects.MEX_adm1);
+
+	var b, s, t;
+	projection.scale(1).translate([0, 0]);
+	var b = path.bounds(states);
+	var s = .9 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height);
+	var t = [(width - s * (b[1][0] + b[0][0])) / 2, (height - s * (b[1][1] + b[0][1])) / 2];
+	projection.scale(s).translate(t);
+
+	var map = svg.append('g').attr('class', 'boundary');
+	mexico = map.selectAll('path').data(states.features);
+
+	var color = d3.scaleLinear().domain([0,33]).range(['red', 'yellow']);
+	
+
+	// Enter
+	mexico.enter()
+		.append('path')
+		.attr('d', path)
+		.attr('fill', function(d,i){
+			return color(i);
+		});
+
+	mexico.exit().remove();
+});
+							  
+							</code>
+						</pre>
+			 		</div>
+				</div>
+					
+				</section>
+				<section id="svg_line">
+					<h5>4.4 SVG Grapics Line</h5>
+					<div class=multiCol>
+						<div class="col">
+							<iframe data-src='d3jsMaps/chapter-4/example-4.html' height='700' width='850' scrolling='no'></iframe>
+						</div>
+						<pre>
+						<code class="javascript">
+var height = 600;
+var width = 900;
+var projection = d3.geoMercator();
+var mexico = void 0;
+
+var geoID = function(d) {
+	return "c" + d.properties.ID_1;
+};
+
+var click = function(d) {
+	console.log('d',d);
+	d3.selectAll('path').attr('fill-opacity',0.2)
+	d3.select('#' + geoID(d)).attr('fill-opacity', 1);
+};
+
+var path = d3.geoPath().projection(projection);
+
+var svg = d3.select("#map")
+	.append("svg")
+	.attr("width", width)
+	.attr("height", height);
+
+d3.json('geo-data.json').then(function(data) {
+
+	var states = topojson.feature(data, data.objects.MEX_adm1);
+
+	var b, s, t;
+	projection.scale(1).translate([0, 0]);
+	var b = path.bounds(states);
+	var s = .9 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height);
+	var t = [(width - s * (b[1][0] + b[0][0])) / 2, (height - s * (b[1][1] + b[0][1])) / 2];
+	projection.scale(s).translate(t);
+
+	var map = svg.append('g').attr('class', 'boundary');
+	mexico = map.selectAll('path').data(states.features);
+	var color = d3.scaleLinear().domain([0,33]).range(['red', 'yellow']);
+
+	mexico.enter()
+		.append('path')
+		.attr('d', path)
+		.attr('id', geoID)
+		.on("click", click)
+		.attr('fill', function(d,i) {
+		return color(i);
+		})
+
+	click(states.features[3]);
+
+
+	mexico.exit().remove();
+});
+						</code>
+					</pre>
+						
 					</div>
 					
 				</section>
+				<section id="svg_path">
+					<h5>4.5 SVG Grapics Path</h5>
+					<div class="multiCol">
+						<div class="col">
+								<iframe data-src='d3jsMaps/chapter-4/example-5.html' height='700' width='850' scrolling='no'></iframe>
+						</div>
+						<div class="col">
+							<pre>
+								<code class="javascript">
+	var height = 600;
+	var width = 900;
+	var projection = d3.geoOrthographic().clipAngle(90);
+	var path = d3.geoPath().projection(projection);
+
+	var svg = d3.select("#map")
+		.append("svg")
+		.attr("width", width)
+		.attr("height", height);
+
+	d3.json('world.json').then(function(data) {
+	var countries = topojson.feature(data, data.objects.countries);
+	var mexico = countries.features[102];
+
+	var map = svg.append('g').attr('class', 'boundary');
+	var world = map.selectAll('path').data(countries.features);
+	mexico = map.selectAll('.mexico').data([mexico]);
+
+	projection.scale(1).translate([0, 0]);
+	var b = path.bounds(countries);
+	var s = .9 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height);
+	var t = [(width - s * (b[1][0] + b[0][0])) / 2, (height - s * (b[1][1] + b[0][1])) / 2];
+	projection.scale(s).translate(t);
+
+	world.enter()
+		.append('path')
+		.attr('d', path);
+
+	mexico.enter()
+		.append('path')
+		.attr('class', 'mexico')
+		.attr('d', path)
+		.style('fill', 'lightyellow').style('stroke', 'orange');
+
+	d3.timer(function(elapsed) {
+		projection.rotate([0.02 * elapsed, 0, 0]);
+		map.selectAll('path').attr('d', path);
+	});
+
+	});
+
+								</code>
+							</pre>
+						</div>
+					</div>
+					
+				</section>
+				<section id="svg_polygon">
+					<h5>4.6 SVG Grapics Polygon</h5>
+					<div class="multiCol">
+						<div class="col">
+							<iframe data-src='d3jsMaps/chapter-4/example-6.html' height='700' width='855' scrolling='no'></iframe>
+						</div>
+						<div class="col">
+							<pre>
+								<code class="javascript">
+	var height = 600;
+	var width = 900;
+	var projection = d3.geoMercator();
+	var mexico = void 0;
+
+	var path = d3.geoPath().projection(projection);
+
+	var svg = d3.select("#map")
+		.append("svg")
+		.attr("width", width)
+		.attr("height", height);
+
+	d3.json('geo-data.json').then(function(data) {
+		var states = topojson.feature(data, data.objects.MEX_adm1);
+
+		var b, s, t;
+		projection.scale(1).translate([0, 0]);
+		var b = path.bounds(states);
+		var s = .9 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height);
+		var t = [(width - s * (b[1][0] + b[0][0])) / 2, (height - s * (b[1][1] + b[0][1])) / 2];
+		projection.scale(s).translate(t);
+
+		var map = svg.append('g').attr('class', 'boundary');
+		mexico = map.selectAll('path').data(states.features);
+
+		var color = d3.scaleLinear().domain([0,33]).range(['red', 'yellow']);
+
+		mexico.enter()
+			.append('path')
+			.attr('d', path)
+			.style('fill', function(d,i) {return color(i)})
+			.style('fill-opacity', 0.2)
+
+		mexico.exit().remove();
+
+		d3.csv('cities.csv', function(cities) {
+		var cityPoints = svg.selectAll('circle').data(cities);
+		var cityText = svg.selectAll('text').data(cities);
+
+		cityPoints.enter()
+			.append('circle')
+			.attr('cx', function(d) {return projection([d.lon, d.lat])[0]})
+			.attr('cy', function(d) {return projection([d.lon, d.lat])[1]})
+			.attr('r', 4)
+			.attr('fill', 'steelblue');
+
+		cityText.enter()
+			.append('text')
+			.attr('x', function(d) {return projection([d.lon, d.lat])[0]})
+			.attr('y', function(d) {return projection([d.lon, d.lat])[1]})
+			.attr('dx', 5)
+			.attr('dy', 3)
+			.text(function(d) {return d.name});
+		});
+	});
+								</code>
+							</pre>
+						</div>
+					</div>
+				</section>
+				<section id="svg_rectangle">
+					<h5>4.7 SVG Grapics Rectangle</h5>
+					<div class="multiCol">
+						<div class="col">
+								<iframe data-src='d3jsMaps/chapter-4/example-7.html' height='700' width='850' scrolling='no'></iframe>
+						</div>
+						<div class="col">
+							<pre>
+								<code class='javascript'>
+	var height = 600;
+	var width = 900;
+	var projection = d3.geoMercator();
+	var mexico = void 0;
+	
+	var path = d3.geoPath().projection(projection);
+	
+	var svg = d3.select("#map")
+		.append("svg")
+		.attr("width", width)
+		.attr("height", height);
+	
+	d3.json('geo-data.json').then(function(data) {
+		var states = topojson.feature(data, data.objects.MEX_adm1);
+	
+		var b, s, t;
+		projection.scale(1).translate([0, 0]);
+		var b = path.bounds(states);
+		var s = .9 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height);
+		var t = [(width - s * (b[1][0] + b[0][0])) / 2, (height - s * (b[1][1] + b[0][1])) / 2];
+		projection.scale(s).translate(t);
+	
+		var map = svg.append('g').attr('class', 'boundary');
+		mexico = map.selectAll('path').data(states.features);
+	
+		var color = d3.scaleLinear().domain([0,33]).range(['red', 'yellow']);
+	
+		mexico.enter()
+			.append('path')
+			.attr('d', path)
+			.style('fill', function(d,i) {return color(i)})
+			.style('fill-opacity', 0.2)
+	
+		mexico.exit().remove();
+	
+		d3.csv('cities.csv', function(cities) {
+		var cityPoints = svg.selectAll('circle').data(cities);
+		var cityText = svg.selectAll('text').data(cities);
+		var radius = d3.scaleLinear().domain([0,100]).range([5,30]);
+	
+		cityPoints.enter()
+			.append('circle')
+			.attr('cx', function(d) {return projection([d.lon, d.lat])[0]; })
+			.attr('cy', function(d) {return projection([d.lon, d.lat])[1]; })
+			.attr('r', function(d) {return radius(d.tequila); })
+			.attr('fill', 'steelblue');
+	
+		cityText.enter()
+			.append('text')
+			.attr('x', function(d) {return projection([d.lon, d.lat])[0]})
+			.attr('y', function(d) {return projection([d.lon, d.lat])[1]})
+			.attr('dx', 5)
+			.attr('dy', 3)
+			.text(function(d) {return d.name});
+	
+		});
+	});
+								</code>
+							</pre>
+						</div>
+					</div>
+				</section>
+				
 			</section>
 			<section>
 				<section>
 					<h5>Planets</h5>
-				
+
 					<div class='multiCol'>
 						<div class='col'>
-							<iframe data-src='d3jsMaps/chapter-12/index.html' height='700' width='950' scrolling='no'></iframe>
+							<iframe max-width="none" max-height="none" data-src='d3jsMaps/chapter-12/index.html' height='700' width='800' scrolling='no'></iframe>
 						</div>
 						<div class='col'>
 							<pre class="javascript">
@@ -494,9 +768,9 @@ setInterval(function(){
 rectangles(svg);
 },1000);
 											
-								</code></pre>						</div>
+								</code></pre> </div>
 					</div>
-					
+
 				</section>
 			</section>
 		</div>
@@ -513,11 +787,17 @@ rectangles(svg);
 		Reveal.initialize({
 			width: "100%",
 			height: "100%",
+			margin: 0.1,
+
+			// Bounds for smallest
+			//largest possible scale to apply to content
+			minScale: 0.2,
+			maxScale: 1.0,
 			dependencies: [
 				{ src: 'plugin/markdown/marked.js' },
 				{ src: 'plugin/markdown/markdown.js' },
 				{ src: 'plugin/notes/notes.js', async: true },
-				{ src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
+				{ src: 'plugin/highlight/highlight.pack.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
 				{ src: 'plugin/toc-progress/toc-progress.js', async: true, callback: function () { toc_progress.initialize(); toc_progress.create(); } },
 				{ src: 'plugin/ga/reveal-ga.min.js' }
 			]

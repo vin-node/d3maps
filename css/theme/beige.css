@@ -83,9 +83,9 @@ body {
 /* Ensure certain elements are never larger than the slide itself */
 .reveal img,
 .reveal video,
-.reveal iframe {
+/* .reveal iframe {
   max-width: 95%;
-  max-height: 95%; }
+  max-height: 95%; } */
 
 .reveal strong,
 .reveal b {

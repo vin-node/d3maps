@@ -24,9 +24,13 @@
   <script>
     (function() {
 
-      var height = 600,
-          width = 450,
-          projection = d3.geoMercator(),
+
+
+      var margin = { top: 30, right: 50, bottom: 30, left: 0 },
+        width = window.innerWidth - margin.left - margin.right,
+        height = window.innerHeight * 0.66 - margin.top - margin.bottom;
+
+      var projection = d3.geoMercator(),
           mexico = void 0;
 
       // Special d3 helper that converts geo coordinates to paths
@@ -35,7 +39,8 @@
 
       var svg = d3.select("#map")
           .append("svg")
-          .attr("viewBox","0 0 450 600");
+          .attr('width', width + margin.left + margin.top)
+          .attr('height', height + margin.top + margin.bottom);
 
       d3.json('geo-data.json').then(function(data) {
 
