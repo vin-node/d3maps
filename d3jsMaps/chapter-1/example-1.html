@@ -28,8 +28,16 @@
   <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.js"></script>
 
     <script>
-      var width = 900,
-          height = 600;
+     
+    var margin = { top: 30, right: 50, bottom: 30, left: 0 },
+      width = window.innerWidth - margin.left - margin.right,
+      height = window.innerHeight * 0.66 - margin.top - margin.bottom;
+
+    var svg = d3.select('#vis')
+      .append('svg')
+      .attr('width', width + margin.left + margin.top)
+      .attr('height', height + margin.top + margin.bottom)
+
 
       var projection = d3.geoMercator();
 
@@ -37,7 +45,9 @@
                   .projection(projection);
 
       var svg = d3.select("body").append("svg")
-        .attr("viewBox","0 0 900 600");
+        .attr('width', width + margin.left + margin.top)
+        .attr('height', height + margin.top + margin.bottom);
+        /*.attr("viewBox","0 0 900 600");*/
 
       d3.json("europe.json").then(function(eu) {
         var countries = topojson.feature(eu, eu.objects.continent_Europe_subunits)
